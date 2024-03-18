@@ -2,14 +2,14 @@ from django import forms
 from website.models import Contact , newslettr
 from captcha.fields import CaptchaField
 
-class ContactForm(forms.ModelForm):
+class ContactForms(forms.ModelForm):
     captcha = CaptchaField()
 
     class Meta:
         model = Contact
         fields=  '__all__' 
 
-class newslettr(forms.ModelForm):
+class ewslettr(forms.ModelForm):
 
     class Meta():
         model = newslettr
