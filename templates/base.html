@@ -64,6 +64,19 @@
 
 
     {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        {% if messages %}
+        {% for message in messages %}
+        Swal.fire({
+            title: "{{ message.tags }}",
+            text: "{{ message }}",
+            icon: "{{ message.tags }}",
+            timer: 5000
+        });
+        {% endfor %}
+        {% endif %}
+    </script>
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
 

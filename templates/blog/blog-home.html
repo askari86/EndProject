@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load blog_tags %}
 {% block body %}
 <main id="main">
 
@@ -8,7 +9,7 @@
     <div class="container">
 
       <ol>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="{% url 'web:index' %}">Home</a></li>
         <li>Blog</li>
       </ol>
       <h2>Blog</h2>
@@ -47,7 +48,7 @@
 
             <div class="entry-content">
               <p>
-                {{post.content|truncatewords:10}}
+                {{post.content|safe|truncatewords:10}}
               </p>
               <div class="read-more">
                 <a href="{% url 'blog:single'  pid=post.id%}">Read More</a>
@@ -57,90 +58,47 @@
           </article><!-- End blog entry -->
           {% endfor %}
 
-          <div class="blog-pagination">
-            <ul class="justify-content-center">
-              <li><a href="#">1</a></li>
-              <li class="active"><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
+          <nav class="blog-pagination justify-content-center d-flex">
+            <ul class="pagination">
+                <li class="page-item">
+                    {% if posts.has_previous %}
+                        <a href="?page={{ posts.previous_page_number }}" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">
+                                <span class="lnr lnr-chevron-left"></span>
+                            </span>
+                        </a>
+                    {% endif %}
+                </li>
+                {% for i in posts.paginator.page_range %}
+                    {% if posts.number == i %}
+                        <li class="page-item active"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                    {% else %}
+                        <li class="page-item"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                    {% endif %}
+                {% endfor %}
+                <li class="page-item">
+                    {% if posts.has_next %}
+                        <a href="?page={{ posts.next_page_number }}" class="page-link" aria-label="Next">
+                            <span aria-hidden="true">
+                                <span class="lnr lnr-chevron-right"></span>
+                            </span>
+                        </a>
+                    {% endif %}
+                </li>
             </ul>
-          </div>
+        </nav>
+        
+          
+          
 
         </div><!-- End blog entries list -->
 
         <div class="col-lg-4">
 
           <div class="sidebar">
-
-            <h3 class="sidebar-title">Search</h3>
-            <div class="sidebar-item search-form">
-              <form action="">
-                <input type="text">
-                <button type="submit"><i class="bi bi-search"></i></button>
-              </form>
-            </div><!-- End sidebar search formn-->
-
-            <h3 class="sidebar-title">Categories</h3>
-            <div class="sidebar-item categories">
-              <ul>
-                <li><a href="#">General <span>(25)</span></a></li>
-                <li><a href="#">Lifestyle <span>(12)</span></a></li>
-                <li><a href="#">Travel <span>(5)</span></a></li>
-                <li><a href="#">Design <span>(22)</span></a></li>
-                <li><a href="#">Creative <span>(8)</span></a></li>
-                <li><a href="#">Educaion <span>(14)</span></a></li>
-              </ul>
-            </div><!-- End sidebar categories-->
-
-            <h3 class="sidebar-title">Recent Posts</h3>
-            <div class="sidebar-item recent-posts">
-              <div class="post-item clearfix">
-                <img src="{% static 'assets/img/blog/blog-recent-1.jpg' %}" alt="">
-                <h4><a href="blog-single.html">Nihil blanditiis at in nihil autem</a></h4>
-                <time datetime="2020-01-01">Jan 1, 2020</time>
-              </div>
-
-              <div class="post-item clearfix">
-                <img src="{% static 'assets/img/blog/blog-recent-2.jpg' %}" alt="">
-                <h4><a href="blog-single.html">Quidem autem et impedit</a></h4>
-                <time datetime="2020-01-01">Jan 1, 2020</time>
-              </div>
-
-              <div class="post-item clearfix">
-                <img src="{% static 'assets/img/blog/blog-recent-3.jpg' %}" alt="">
-                <h4><a href="blog-single.html">Id quia et et ut maxime similique occaecati ut</a></h4>
-                <time datetime="2020-01-01">Jan 1, 2020</time>
-              </div>
-
-              <div class="post-item clearfix">
-                <img src="{% static 'assets/img/blog/blog-recent-4.jpg' %}" alt="">
-                <h4><a href="blog-single.html">Laborum corporis quo dara net para</a></h4>
-                <time datetime="2020-01-01">Jan 1, 2020</time>
-              </div>
-
-              <div class="post-item clearfix">
-                <img src="{% static 'assets/img/blog/blog-recent-5.jpg' %}" alt="">
-                <h4><a href="blog-single.html">Et dolores corrupti quae illo quod dolor</a></h4>
-                <time datetime="2020-01-01">Jan 1, 2020</time>
-              </div>
-
-            </div><!-- End sidebar recent posts-->
-
-            <h3 class="sidebar-title">Tags</h3>
-            <div class="sidebar-item tags">
-              <ul>
-                <li><a href="#">App</a></li>
-                <li><a href="#">IT</a></li>
-                <li><a href="#">Business</a></li>
-                <li><a href="#">Mac</a></li>
-                <li><a href="#">Design</a></li>
-                <li><a href="#">Office</a></li>
-                <li><a href="#">Creative</a></li>
-                <li><a href="#">Studio</a></li>
-                <li><a href="#">Smart</a></li>
-                <li><a href="#">Tips</a></li>
-                <li><a href="#">Marketing</a></li>
-              </ul>
-            </div><!-- End sidebar tags-->
+            {% include 'blog/blog-search.html' %}
+            {% postcategotys %}
+            {% lastposts %}
 
           </div><!-- End sidebar -->
 
