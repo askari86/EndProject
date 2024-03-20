@@ -44,7 +44,7 @@
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top">
         <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a href="{% url 'web:index' %}" class="logo d-flex align-items-center">
                 <img src="{% static 'assets/img/logo.png' %}" alt="">
                 <span>FlexStart</span>
             </a>
@@ -54,7 +54,7 @@
                     <li><a class="nav-link scrollto" href="{% url 'web:about' %}">About</a></li>
                     <li><a href="{% url 'blog:home' %}">Blog</a></li>
                     <li><a class="nav-link scrollto" href="{% url 'web:contact' %}">Contact</a></li>
-                    <li><a class="getstarted scrollto" href="login.html">login</a></li>
+                    <li><a class="getstarted scrollto" href="{% url 'accounts:login' %}">login</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->

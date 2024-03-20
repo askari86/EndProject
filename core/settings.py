@@ -50,9 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'website.apps.WebsiteConfig',
     'blog.apps.BlogConfig',
-    'compressor',
-    'cssmin',
-    'jsmin',
+    'accounts.apps.AccountsConfig',
 ]
 
 #robots
