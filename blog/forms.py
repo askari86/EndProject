@@ -1,9 +1,7 @@
 from django import forms
-from blog.models import Comment
-from captcha.fields import CaptchaField
+from .models import Comment
 
-class Commentforms(forms.Form):
-    captcha = CaptchaField()
-    class Meta :
+class Commentforms(forms.ModelForm):
+    class Meta:
         model = Comment
-        filds = ['name', 'email', 'subject', 'message' , 'post']
+        fields = ['name', 'email', 'subject', 'message', 'post']

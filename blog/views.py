@@ -25,39 +25,38 @@ def blog_home(request , **kwargs):
         posts = posts.get_page(1)
     except EmptyPage :
         posts = posts.get_page(1)
-    context = {'posts':posts}
+    context = {'posts':posts }
     return render(request, 'blog/blog-home.html' , context)
 
 
 
 
 def blog_single(request , pid):
-    # if request.method == 'POST':
-    #     form = Commentforms(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         messages.add_message(request,messages.SUCCESS,'Your comment has been registered. Then the review will be displayed')
-    #     else :
-    #         messages.add_message(request,messages.ERROR,'your tikct didnt submited')
-    currnt_time = timezone.now()
-    posts = get_object_or_404(Post,pk=pid , published_date__lte = currnt_time , status = 1)
+    if request.method == 'POST':
+        form = Commentforms(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,'Your comment has been registered. Then the review will be displayed')
+        else:
+            messages.add_message(request,messages.ERROR,'your tikct didnt submited')
+    currnt_time=timezone.now()
+    posts=get_object_or_404(Post,pk=pid,status=1,published_date__lte=currnt_time)
     next_post = Post.objects.filter(id__gt=pid, status=1, published_date__lte=currnt_time).order_by('id').first()
     prev_post = Post.objects.filter(id__lt=pid, status=1, published_date__lte=currnt_time).order_by('-id').first()
-    posts.counted_views += 1
+    posts.counted_views+=1
     posts.save()
-    context={'post':posts,'next_post':next_post,'prev_post':prev_post}
-    return render(request,'blog/blog-single.html',context)
-    # if posts.login_required==False:
-    #     comments=Comment.objects.filter(post=posts.id,approwed=True)
-    #     form=Commentforms()
-    #     context={'pot':posts,'comments':comments,'next_post':next_post,'prev_post':prev_post,'form':form}
-    #     return render(request,'blog/blog-single.html',context)  
-    # elif posts.login_required==True and request.user.is_authenticated:
-    #     posts.login_required=False
-    #     comments=Comment.objects.filter(post=posts.id,approwed=True)
-    #     form=Commentforms()
-        
-    # return HttpResponseRedirect(reverse('accounts:login'))
+    if posts.login_required==False:
+        comments=Comment.objects.filter(post=posts.id,approwed=True)
+        form=Commentforms()
+        context={'post':posts,'comments':comments,'next_post':next_post,'prev_post':prev_post,'form':form}
+        return render(request,'blog/blog-single.html',context)  
+    elif posts.login_required==True and request.user.is_authenticated:
+        posts.login_required=False
+        comments=Comment.objects.filter(post=posts.id,approwed=True)
+        form=Commentforms()
+        context={'post':posts,'comments':comments,'next_post':next_post,'prev_post':prev_post,'form':form}
+        return render(request,'blog/blog-single.html',context)
+    return HttpResponseRedirect(reverse('accounts:login'))
 
 
 
@@ -66,7 +65,8 @@ def blog_category(request,cat_name):
     posts=Post.objects.filter(status=1,published_date__lte=currnt_time)
     posts=posts.filter(category__name=cat_name)
     if not posts.exists():
-        raise Http404("No posts found for category '{}'".format(cat_name))
+        messages.add_message(request,messages.ERROR,'The desired phrase was not found. Please try again')
+        return HttpResponseRedirect('/blog/')  
     context={'posts':posts}
     return render(request,'blog/blog-caregories.html',context)
 

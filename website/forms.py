@@ -4,12 +4,11 @@ from captcha.fields import CaptchaField
 
 class ContactForms(forms.ModelForm):
     captcha = CaptchaField()
-
     class Meta:
         model = Contact
-        fields=  '__all__' 
+        fields = ['name', 'email', 'subject', 'message']
 
-class ewslettr(forms.ModelForm):
+class newslettr(forms.ModelForm):
 
     class Meta():
         model = newslettr

@@ -1,97 +1,81 @@
 {% extends "base.html" %}
 {% load static %}
+{% block styles %}
+<!-- Include Bootstrap CSS -->
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group.inline {
+        display: flex;
+    }
+    /* اعمال استایل‌ها برای ورودی‌های نام و ایمیل */
+    .form-group.inline input[type="text"],
+    .form-group.inline input[type="email"] {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    
+
+    .form-group textarea {
+        width: 100%;
+    }
+    .form-group.captcha {
+        text-align: center;
+    }
+    .form-group.captcha img {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    .form-group.button {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
 {% block body %}
-    <main id="main">
-        <section id="contact" class="contact">
-
-            <div class="container" data-aos="fade-up">
-
-                <header class="section-header">
-                    <h2>Contact</h2>
-                    <p>Contact Us</p>
-                </header>
-
-                <div class="row gy-4">
-
-                    <div class="col-lg-6">
-
-                        <div class="row gy-4">
-                            <div class="col-md-6">
-                                <div class="info-box">
-                                    <i class="bi bi-geo-alt"></i>
-                                    <h3>Address</h3>
-                                    <p>A108 Adam Street,<br>New York, NY 535022</p>
-                                </div>
+<main id="main">
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-container" data-aos="fade-up">
+                        <header class="section-header text-center">
+                            <h2>Contact</h2>
+                            <p>Contact Us</p>
+                        </header>
+                        <form action="{% url 'web:contact' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group inline">
+                                <input name="name" placeholder="Enter your name" class="form-control" required type="text"><br>
+                                <input name="email" placeholder="Enter email address" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" class="form-control" required type="email"><br>
                             </div>
-                            <div class="col-md-6">
-                                <div class="info-box">
-                                    <i class="bi bi-telephone"></i>
-                                    <h3>Call Us</h3>
-                                    <p>+1 5589 55488 55<br>+1 6678 254445 41</p>
-                                </div>
+                            
+                            <div class="form-group">
+                                <input name="subject" placeholder="Enter subject" class="form-control" required type="text"><br>
                             </div>
-                            <div class="col-md-6">
-                                <div class="info-box">
-                                    <i class="bi bi-envelope"></i>
-                                    <h3>Email Us</h3>
-                                    <p>info@example.com<br>contact@example.com</p>
-                                </div>
+                            <div class="form-group">
+                                <textarea class="form-control" name="message" placeholder="Enter Message" rows="6" required></textarea><br>
                             </div>
-                            <div class="col-md-6">
-                                <div class="info-box">
-                                    <i class="bi bi-clock"></i>
-                                    <h3>Open Hours</h3>
-                                    <p>Monday - Friday<br>9:00AM - 05:00PM</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-lg-6">
-                        <form action="forms/contact.php" method="post" class="php-email-form">
-                            <div class="row gy-4">
-
-                                <div class="col-md-6">
-                                    <input type="text" name="name" class="form-control" placeholder="Your Name"
-                                        required>
-                                </div>
-
-                                <div class="col-md-6 ">
-                                    <input type="email" class="form-control" name="email" placeholder="Your Email"
-                                        required>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control" name="subject" placeholder="Subject"
-                                        required>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <textarea class="form-control" name="message" rows="6" placeholder="Message"
-                                        required></textarea>
-                                </div>
-
-                                <div class="col-md-12 text-center">
-                                    <div class="loading">Loading</div>
-                                    <div class="error-message"></div>
-                                    <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                                    <button type="submit">Send Message</button>
-                                </div>
-
-                            </div>
+                            {{ form.captcha }}
+                            <button class="btn btn-primary" type="submit">Send Message</button>
                         </form>
-
                     </div>
-
                 </div>
-
             </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
 
-        </section><!-- End Contact Section -->
+{% block scripts %}
+<!-- Include Bootstrap JS -->
 
-    </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  {% endblock %}
+{% endblock %}
