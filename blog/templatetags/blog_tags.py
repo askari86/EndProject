@@ -1,11 +1,13 @@
 from django import template
 from blog.models import Category
+from django.utils import timezone
 from blog.models import  Post
 register=template.Library()
 
 
 @register.inclusion_tag('blog/blog-caregories.html')
 def postcategotys():
+   currnt_time=timezone.now()
    posts = Post.objects.filter(status=1)
    categories = Category.objects.all()
    cat_dict = {}
@@ -17,5 +19,14 @@ def postcategotys():
 
 @register.inclusion_tag('blog/blog-recent-post.html')
 def lastposts(arg=5):
-    posts=Post.objects.filter(status=1).order_by('-published_date')[:arg]
+    currnt_time=timezone.now()
+    posts=Post.objects.filter(status=1 , published_date__lte=currnt_time).order_by('-published_date')[:arg]
     return {'posts':posts}
+
+
+@register.inclusion_tag('web/recent-blog.html')
+def recent (arg=3):
+   currnt_time=timezone.now()
+   posts = Post.objects.filter(status=1 , published_date__lte=currnt_time).order_by('-published_date')[:arg]
+   context = {'posts' : posts}
+   return context

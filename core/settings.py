@@ -25,6 +25,7 @@ SECRET_KEY = 'django-insecure-a4xmzjuz44_6k+!l@=8y&+_@ef8oh#^6!g_^j)v4vrgpc-*@1l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ['example.com', 'www.example.com', '127.0.0.1', 'localhost']
 ALLOWED_HOSTS = []
 
 SITE_ID = 2
@@ -51,7 +52,11 @@ INSTALLED_APPS = [
     'website.apps.WebsiteConfig',
     'blog.apps.BlogConfig',
     'accounts.apps.AccountsConfig',
+    'compressor',
+    'cssmin',
+    'jsmin',
 ]
+
 
 #robots
 ROBOTS_USE_HOST = True
@@ -163,4 +168,35 @@ INTERNAL_IPS = [
 
     "127.0.0.1",
 
+]
+
+
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'elyaaskarii86@gmail.com'
+EMAIL_HOST_PASSWORD = 'dikpnbixdteylmur'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+
+
+
+STATIC_ROOT= BASE_DIR / 'static'
+MEDIA_ROOT= BASE_DIR / 'media'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "statics",
+]
+COMPRESS_ENABLED = True
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
+
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.CSSMinFilter',
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter',
 ]
